@@ -1,11 +1,19 @@
 <script>
-    var buttonStyle = 'text-3xl transition-transform hover:scale-125 decoration-8 hover:underline hover:decoration-blue-400 my-auto px-2'
+    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+    var navLiStyle = 'text-xl md:transition-all md:hover:text-blue-400 md:hover:scale-125'
+    var navLiActiveStyle = 'md:border-blue-400 md:border-b-2 md:rounded-none'
 </script>
 
 <main>
-    <div class='px-5 py-0 flex h-[12vh] bg-blue-200 flex items-stretch space-x-4'>
-        <h1 class='my-auto text-4xl font-bold mr-10'>BaseApp</h1>
-        <a class={buttonStyle} href="/">Home</a>
-        <a class={buttonStyle} href="/add">Add Entry</a>
-    </div>
+    <Navbar class="md:px-10">
+        <NavBrand href="/">
+            <img src='/favicon.png' class="me-3 h-6 sm:h-9" alt="Logo" />
+            <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Base App</span>
+        </NavBrand>
+        <NavHamburger/>
+        <NavUl>
+            <NavLi class={navLiStyle} href="/">Home</NavLi>
+            <NavLi class={navLiStyle} href="/add">Add Entry</NavLi>
+        </NavUl>
+    </Navbar>
 </main>
