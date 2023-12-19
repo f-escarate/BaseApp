@@ -17,6 +17,7 @@
         <NavUl {activeUrl} {activeClass} {nonActiveClass}>
             <NavLi href="/">Home</NavLi>
             <NavLi href="/add">Add Entry</NavLi>
+            <NavLi href="/aboutUs">About us</NavLi>
         </NavUl>
     </Navbar>
 </main>
