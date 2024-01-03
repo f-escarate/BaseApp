@@ -1,21 +1,21 @@
-{
-    "Contacto": {
-        "color": "bg-sky-500",
+[
+    {
+        "name": "Contacto",
         "sections": {
             "Email": "example@email.com",
             "Número": "+569 XXX XXX XX"
         }
     },
-    "Info": {
-        "color": "bg-yellow-400",
+    {
+        "name": "Info",
         "sections": {
             "Info1": "Sed ut perspiciatis unde omnis iste doloremque",
             "Info2": " natus error sit voluptatem accusantium",
             "Info3": "audantium, totam rem aperiam, eaque ipsa quae ab"
         }
     },
-    "Dirección": {
-        "color": "bg-green-500",
+    {
+        "name": "Dirección",
         "sections": {
             "Calle": "Calle Ejemplo",
             "Número": "123",
@@ -23,4 +23,4 @@
             "Ciudad": "Ciudad Ejemplo"
         }
     }
-}
+]
