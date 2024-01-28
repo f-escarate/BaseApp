@@ -29,20 +29,30 @@
             <Label for="title" class="mb-2">Title</Label>
             <FloatingLabelInput style="filled" name="title" id="title" type="text" label="Title" bind:value={title}/>
         </div>
-        <div class='md:col-span-1 h-full'>
-            <Label for="continuous-var">Continuous variable</Label>
-            <Range id="continuous-var" name="continuous-var" min="0" max="10" step="0.001" bind:value={continuousVar}/>
-            <p class='text-xs'>Value: {continuousVar}</p>
+        <div class='md:col-span-1 h-full flex flex-col justify-between'>
+            <div>
+                <Label for="continuous-var">Continuous variable</Label>
+                <Range id="continuous-var" name="continuous-var" min="0" max="10" step="0.001" bind:value={continuousVar}/>
+                <p class='text-xs'>Value: {continuousVar}</p>
+            </div>
 
-            <Label for="discrete-var">Discrete variable</Label>
-            <Range id="discrete-var" name="discrete-var" min="0" max="10" step="1" bind:value={discreteVar}/>
-            <p class='text-xs'>Value: {discreteVar}</p>
+            <div>
+                <Label for="discrete-var">Discrete variable</Label>
+                <Range id="discrete-var" name="discrete-var" min="0" max="10" step="1" bind:value={discreteVar}/>
+                <p class='text-xs'>Value: {discreteVar}</p>
+            </div>
+
+            <div class="flex flex-col">
+                <Label for="date" class="mb-1">Date</Label>
+                <input type="date" id="date" name="date" class="p-2">
+            </div>
         </div>
 
-        <div>
+        <div class="h-full">
             <Label for="description" class="mb-2">Description</Label>
-            <Textarea id="description" placeholder="Enter description" rows="5" name="description" bind:value={description}/>
+            <Textarea class="h-full" id="description" placeholder="Enter description" rows="5" name="description" bind:value={description}/>
         </div>
-        <Button class='md:col-span-2 w-[50%] mx-auto' color="green" on:click={handleSubmit} pill>Add</Button>
+
+        <Button class='md:col-span-2 w-[50%] mx-auto h-full' color="green" on:click={handleSubmit} pill>Add</Button>
     </div>
 </main>
