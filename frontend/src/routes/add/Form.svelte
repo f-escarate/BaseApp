@@ -1,22 +1,25 @@
 <script>
     import { FloatingLabelInput, Textarea, Range, Label, Button } from 'flowbite-svelte';
-
+    const HOST = 'http://localhost:8000';
     let title = '';
     let description = '';
-    let continuousVar = 5;
+    let continuousVar = 5.0;
     let discreteVar = 5;
     
     
     const handleSubmit = async (e) => {
-        console.log('Form submitted');
-		const data = new URLSearchParams();
-		data.append('title', title);
-        data.append('description', description);
-        data.append('continuousVar', continuousVar);
-        data.append('discreteVar', discreteVar);
-        const response = await fetch(`${window.location.href}?/submit`, {
+		const data = {
+            title: title,
+            description: description,
+            continuousVar: continuousVar,
+            discreteVar: discreteVar
+        }
+        const response = await fetch(`${HOST}/post_item/`, {
             method: "POST",
-            body: data
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         });
         const json = await response.json();
         console.log(json);
