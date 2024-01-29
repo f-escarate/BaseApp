@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api_models import Item
+from utils import save_image
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -21,5 +22,7 @@ app.add_middleware(
 
 
 @app.post("/post_item/")
-async def post_item(item: Item):
-    return item
+async def post_item(item: Item = Depends(Item)):
+    print(item)
+    save_image(item.image, item.title)
+    return "ret"

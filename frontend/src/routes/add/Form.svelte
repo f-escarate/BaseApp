@@ -5,31 +5,53 @@
     let description = '';
     let continuousVar = 5.0;
     let discreteVar = 5;
+    let date = null;
+    let image = null;
     
+    const validation = () => {
+        let msg = '';
+        if (title == '')
+            msg += 'Title cannot be empty\n';
+        if (description == '')
+            msg += 'Description cannot be empty\n';
+        if (date == null)
+            msg +=  'Date cannot be empty\n';
+        if (image == null)
+            msg += 'Image cannot be empty\n';
+        
+        if (msg !== '') {
+            alert(msg);
+            return false;
+        }
+        return true;
+    }
     
     const handleSubmit = async (e) => {
-		const data = {
-            title: title,
-            description: description,
-            continuousVar: continuousVar,
-            discreteVar: discreteVar
+        if (!validation()) {
+            return;
         }
+		const data = new FormData();
+        data.append('title', title);
+        data.append('description', description);
+        data.append('continuousVar', continuousVar);
+        data.append('discreteVar', discreteVar);
+        data.append('date', date);
+        data.append('image', image);
+
         const response = await fetch(`${HOST}/post_item/`, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: data
         });
         const json = await response.json();
         console.log(json);
     }
 
     const loadFile = (event) => {
-        var output = document.getElementById('preview');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = () => {
-            URL.revokeObjectURL(output.src) // free memory
+        var preview = document.getElementById('preview');
+        image = event.target.files[0];
+        preview.src = URL.createObjectURL(image);
+        preview.onload = () => {
+            URL.revokeObjectURL(preview.src) // free memory
         }
     };
 
@@ -55,7 +77,7 @@
 
             <div class="flex flex-col">
                 <Label for="date" class="mb-1">Date</Label>
-                <input type="date" id="date" name="date" class="p-2">
+                <input type="date" id="date" name="date" class="p-2" bind:value={date}>
             </div>
         </div>
 
