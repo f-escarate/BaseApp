@@ -1,7 +1,5 @@
 import datetime
-import inspect
-from typing import Optional, Type
-from fastapi import File, Form, UploadFile
+from fastapi import Form, UploadFile
 from pydantic import BaseModel
 
 

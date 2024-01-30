@@ -1,4 +1,9 @@
 import glob, os
+
+from requests import Session
+from schemas import Item
+import models
+
 IMG_PATH = "./data/images"
 
 def img_validation(img):
@@ -11,7 +16,7 @@ def img_validation(img):
         return extension
     return None
 
-def save_image(img, id):
+def save_image(img, id) -> str:
     """
         Agrega la foto dada a la ubicación dada.
     """
@@ -25,4 +30,11 @@ def save_image(img, id):
     with open(f"{IMG_PATH}/{id}.{extension}", "wb+") as file_object:
         file_object.write(img.file.read())
     return extension
+
+def create_item(db: Session, item: Item):
+    db_item = models.Item(**item.dict())
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
     

@@ -7,7 +7,18 @@
     let discreteVar = 5;
     let date = null;
     let image = null;
-    
+
+    const restartForm = () => {
+        title = '';
+        description = '';
+        continuousVar = 5.0;
+        discreteVar = 5;
+        date = null;
+        image = null;
+        var preview = document.getElementById('preview');
+        preview.src = '';
+    }
+
     const validation = () => {
         let msg = '';
         if (title == '')
@@ -44,6 +55,12 @@
         });
         const json = await response.json();
         console.log(json);
+        if (json.status == 'success') {
+            alert('Successfully added');
+            restartForm();
+        } else {
+            alert('Failed to add');
+        }
     }
 
     const loadFile = (event) => {
@@ -56,7 +73,7 @@
     };
 
 </script>
-<main class='border-4 border-blue-300 p-5'>
+<div class='border-4 border-blue-300 p-5'>
     <div class='grid gap-6 items-end w-full md:grid-cols-2'>
         <div class='md:col-span-2'>
             <Label for="title" class="mb-2">Title</Label>
@@ -97,4 +114,4 @@
         </div>
         <Button class='md:col-span-2 w-[50%] mx-auto h-full' color="green" on:click={handleSubmit} pill>Add</Button>
     </div>
-</main>
+</div>
