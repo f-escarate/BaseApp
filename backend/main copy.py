@@ -1,11 +1,10 @@
-from fastapi import Depends, FastAPI, Response
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from schemas import Item
 from utils import save_image, create_item, read_image, img_validation
 from database import get_db, Base, engine
-import models
 
 Base.metadata.create_all(bind=engine)
 
@@ -40,11 +39,10 @@ async def post_item(item: Item = Depends(Item), db: Session = Depends(get_db)):
 
 @app.get("/get_items/")
 async def get_items(db: Session = Depends(get_db)):
-    items = db.query(models.Item).all()
+    items = db.query(Item).all()
     return items
 
 @app.get("/get_image/{item_id}")
 async def get_image(item_id: int, db: Session = Depends(get_db)):
-    item = db.query(models.Item).filter(models.Item.id == item_id).first()
-    img = read_image(item_id, item.image)
-    return Response(content=img, media_type=f"image/{item.image}")
+    item = db.query(Item).filter(Item.id == item_id).first()
+    return read_image(item_id, item.image)

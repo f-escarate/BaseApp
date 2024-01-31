@@ -6,7 +6,7 @@ import models
 
 IMG_PATH = "./data/images"
 
-def img_validation(img):
+def img_validation(img) -> str | None:
     """
         Retorna la extensión de la foto dada, si es que es una foto válida.
     """
@@ -16,20 +16,23 @@ def img_validation(img):
         return extension
     return None
 
-def save_image(img, id) -> str:
+def save_image(img, id, extension):
     """
         Agrega la foto dada a la ubicación dada.
     """
-    extension = img_validation(img)
-    if extension is None:
-        return None
     # Eliminar fotos antiguas (si es que existen)
-    for file in glob.glob(id + '.*'):
+    for file in glob.glob(str(id) + '.*'):
         os.remove(file)
-    # Guardar la nueva
+    # Guardar la foto
     with open(f"{IMG_PATH}/{id}.{extension}", "wb+") as file_object:
         file_object.write(img.file.read())
-    return extension
+
+def read_image(id, extension):
+    """
+        Lee la foto con el id dado.
+    """
+    with open(f"{IMG_PATH}/{id}.{extension}", "rb") as file_object:
+        return file_object.read()
 
 def create_item(db: Session, item: Item):
     db_item = models.Item(**item.dict())

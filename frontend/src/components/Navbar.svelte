@@ -7,17 +7,16 @@
     $: activeUrl = $page.url.pathname;
 </script>
 
-<main>
-    <Navbar class="md:px-10">
-        <NavBrand href="/">
-            <img src='/favicon.png' class="me-3 h-6 sm:h-9" alt="Logo" />
-            <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Base App</span>
-        </NavBrand>
-        <NavHamburger/>
-        <NavUl {activeUrl} {activeClass} {nonActiveClass}>
-            <NavLi href="/">Home</NavLi>
-            <NavLi href="/add/">Add Entry</NavLi>
-            <NavLi href="/aboutUs/">About us</NavLi>
-        </NavUl>
-    </Navbar>
-</main>
+<Navbar class="md:px-10">
+    <NavBrand href="/">
+        <img src='/favicon.png' class="me-3 h-6 sm:h-9" alt="Logo" />
+        <span class="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">Base App</span>
+    </NavBrand>
+    <NavHamburger/>
+    <NavUl {activeUrl} {activeClass} {nonActiveClass}>
+        <NavLi href="/">Home</NavLi>
+        <NavLi href="/add/">Add Entry</NavLi>
+        <NavLi href="/searchEntries/">Search Entries</NavLi>
+        <NavLi href="/aboutUs/">About us</NavLi>
+    </NavUl>
+</Navbar>
