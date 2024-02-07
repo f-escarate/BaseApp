@@ -6,6 +6,10 @@ El repositorio contiene una app desarrollada usando Svelte, Tailwind CSS y FastA
 Instalación
 ```
     pip install "fastapi[all]"
+    pip install sqlalchemy
+    pip install "python-jose[cryptography]"
+    pip install bcrypt==4.0.1
+    pip install "passlib[bcrypt]"
 ```
 Despliegue
 ```
