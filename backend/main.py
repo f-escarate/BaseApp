@@ -77,6 +77,9 @@ async def register(user: UserRegister = Depends(UserRegister), db: Session = Dep
     db_user = db.query(models.User).filter(models.User.username == user.username).first()
     if db_user is not None:
         return {"status": "error", "msg": "username already exists"}
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if db_user is not None:
+        return {"status": "error", "msg": "an account with this email already exists"}
     if user.password != user.password2:
         return {"status": "error", "msg": "passwords do not match"}
     new_user = models.User(username=user.username, email=user.email, hashed_password=get_password_hash(user.password))
