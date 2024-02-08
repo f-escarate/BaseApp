@@ -31,11 +31,14 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_user_from_db(email: str, db: Session):
+def get_user_by_email(email: str, db: Session):
     return db.query(models.User).filter(models.User.email == email).first()
 
+def get_user_by_name(username: str, db: Session):
+    return db.query(models.User).filter(models.User.username == username).first()
+
 def authenticate_user(email: str, password: str, db):
-    user = get_user_from_db(email, db)
+    user = get_user_by_email(email, db)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):

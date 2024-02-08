@@ -16,10 +16,9 @@
             body: data
         });
         const json = await response.json();
-        console.log(json);
         if (json.status == 'success') {
-            alert('Successfully logged in');
             Cookies.set('token', json.access_token, { sameSite:'strict' });
+            alert('Successfully logged in');
             window.location.href = '/';
         }
     }

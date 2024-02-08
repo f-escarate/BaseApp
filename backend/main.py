@@ -8,7 +8,7 @@ from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
 from schemas import Item, UserRegister
-from authentication import authenticate_user, create_access_token, get_password_hash, get_user_from_db, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, unauthorized_exception
+from authentication import authenticate_user, create_access_token, get_password_hash, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, get_user_by_name, unauthorized_exception
 from utils import save_image, create_item, read_image, img_validation
 from database import get_db, Base, engine
 import models
@@ -61,7 +61,7 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = 
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = get_user_from_db(username, db)
+    user = get_user_by_name(username, db)
     if user is None:
         raise credentials_exception
     return {
