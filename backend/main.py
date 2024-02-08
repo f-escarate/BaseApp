@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from typing import Annotated
+from fastapi.staticfiles import StaticFiles
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
@@ -20,6 +21,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        "http://localhost:8000",
         "http://localhost:8080",
     ],
     allow_credentials=True,
@@ -97,3 +99,5 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
         "access_token": access_token,
         "token_type": "bearer"
     }
+
+app.mount("/", StaticFiles(directory="static",html = True), name="static")
