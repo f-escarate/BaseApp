@@ -12,7 +12,24 @@ def form_body(cls):
     )
     return cls
 
+# ================ Users schemas ================ #
+@form_body
+class UserRegister(BaseModel):
+    username: str
+    email: str
+    password: str
+    password2: str
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str
+
+
+# ================ Item schemas ================ #
+    
 @form_body
 class Item(BaseModel):
     title: str

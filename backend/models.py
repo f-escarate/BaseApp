@@ -3,6 +3,14 @@ from sqlalchemy import Column, Date, Float, Integer, String
 from database import Base
 
 
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, index=True)
+    email = Column(String, index=True)
+    hashed_password = Column(String, index=True)
+
 class Item(Base):
     __tablename__ = "items"
 
