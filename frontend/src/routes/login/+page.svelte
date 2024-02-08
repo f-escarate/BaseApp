@@ -11,7 +11,7 @@
         const data = new FormData();
         data.append('username', email);
         data.append('password', pass);
-        const response = await fetch('http://localhost:8000/token', {
+        const response = await fetch(`${HOST}/token`, {
             method: "POST",
             body: data
         });
@@ -20,7 +20,9 @@
             Cookies.set('token', json.access_token, { sameSite:'strict' });
             alert('Successfully logged in');
             window.location.href = '/';
+            return;
         }
+        alert('Username or password incorrect');
     }
 
     const handleRegister = async () => {
@@ -33,16 +35,22 @@
         data.append('email', email);
         data.append('password', pass);
         data.append('password2', pass2);
-        console.log(data);
         const response = await fetch(`${HOST}/register/`, {
             method: "POST",
             body: data
         });
         const json = await response.json();
-        console.log(json);
         if (json.status == 'success') {
             alert('Successfully registered');
             window.location.href = '/login';
+        }
+        else if (json.status == 'error') {
+            alert(json.msg);
+        }
+    }
+    const onEnter = (e, func) => {
+        if (e.key == 'Enter') {
+            func();
         }
     }
 
@@ -54,18 +62,18 @@
         <TabItem open>
             <span slot="title">Log In</span>
             <div class='flex flex-col gap-4'>
-                <FloatingLabelInput style="filled" name="email" id="email" type="text" label="Email" bind:value={email}/>
-                <FloatingLabelInput style="filled" name="password" id="password" type="password" label="Password" bind:value={pass}/>
+                <FloatingLabelInput style="filled" bind:value={email} on:keydown={(e)=>onEnter(e, handleLogin)} name="email" id="email" type="text" label="Email"/>
+                <FloatingLabelInput style="filled" bind:value={pass}  on:keydown={(e)=>onEnter(e, handleLogin)} name="password" id="password" type="password" label="Password"/>
                 <Button size="sm" on:click={handleLogin}>Log In</Button>
             </div>
         </TabItem>
         <TabItem>
             <span slot="title">Register</span>
             <div class='flex flex-col gap-4'>
-                <FloatingLabelInput style="filled" name="name" id="name" type="text" label="Name" bind:value={name}/>
-                <FloatingLabelInput style="filled" name="email" id="register_email" type="text" label="Email" bind:value={email}/>
-                <FloatingLabelInput style="filled" name="password" id="register_password" type="password" label="Password" bind:value={pass}/>
-                <FloatingLabelInput style="filled" name="password2" id="register_password2" type="password" label="Repeat your password" bind:value={pass2}/>
+                <FloatingLabelInput bind:value={name}  on:keydown={(e)=>onEnter(e, handleRegister)} style="filled" name="name" id="name" type="text" label="Name"/>
+                <FloatingLabelInput bind:value={email} on:keydown={(e)=>onEnter(e, handleRegister)} style="filled" name="email" id="register_email" type="text" label="Email"/>
+                <FloatingLabelInput bind:value={pass}  on:keydown={(e)=>onEnter(e, handleRegister)} style="filled" name="password" id="register_password" type="password" label="Password"/>
+                <FloatingLabelInput bind:value={pass2} on:keydown={(e)=>onEnter(e, handleRegister)} style="filled" name="password2" id="register_password2" type="password" label="Repeat your password"/>
                 <Button size="sm" on:click={handleRegister}>Register</Button>
             </div>
         </TabItem>
