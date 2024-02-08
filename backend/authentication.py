@@ -1,5 +1,5 @@
 import os
-
+from dotenv import load_dotenv
 from fastapi import HTTPException, status
 import models
 from datetime import datetime, timedelta, timezone
@@ -9,9 +9,8 @@ from jose import jwt
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# THE SECRET KEY SHOULD BE EXTRACTED FROM THE ENVIRONMENT VARIABLES NOT HARDCODED
-SECRET_KEY = '8d2205bff3068c2843fe1a2c462b506996814cfb167b882cf0e6c41288144442'
-#SECRET_KEY = os.environ['SECRET_KEY']
+load_dotenv()
+SECRET_KEY = os.environ['SECRET_KEY']
 ALGORITHM = 'HS256'
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

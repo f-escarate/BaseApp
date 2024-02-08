@@ -1,3 +1,4 @@
 /backend/__pycache__
 /backend/static/*
+/backend/.env
 !/backend/static/PUT_STATIC_FILES_HERE

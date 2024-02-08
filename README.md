@@ -10,6 +10,7 @@ El repositorio contiene una app desarrollada usando Svelte, Tailwind CSS y FastA
     pip install "python-jose[cryptography]"
     pip install bcrypt==4.0.1
     pip install "passlib[bcrypt]"
+    pip install python-dotenv
 ```
 ### Despliegue
 ```
