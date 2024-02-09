@@ -1,5 +1,6 @@
 <script>
     import { FloatingLabelInput, Textarea, Range, Label, Button } from 'flowbite-svelte';
+    export let token;
     const HOST = 'http://localhost:8000';
     let title = '';
     let description = '';
@@ -51,6 +52,9 @@
 
         const response = await fetch(`${HOST}/post_item/`, {
             method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
             body: data
         });
         const json = await response.json();

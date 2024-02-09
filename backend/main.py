@@ -31,7 +31,7 @@ app.add_middleware(
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @app.post("/post_item/")
-async def post_item(item: Item = Depends(Item), db: Session = Depends(get_db)):
+async def post_item(token: Annotated[str, Depends(oauth2_scheme)], item: Item = Depends(Item), db: Session = Depends(get_db)):
     file_extension = img_validation(item.image)
     if file_extension is None:
         return {"status": "error", "msg": "invalid image"}

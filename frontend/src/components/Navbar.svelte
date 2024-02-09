@@ -1,5 +1,7 @@
 <script>
-    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+    import { Navbar, NavBrand, NavLi, NavUl } from 'flowbite-svelte';
+    import Cookies from 'js-cookie';
+    let token = Cookies.get('token');
     var nonActiveClass = 'text-xl md:transition-all md:hover:text-blue-400 md:hover:scale-125'
     var activeClass = nonActiveClass+' md:border-blue-400 md:border-b-2 md:rounded-none'
 
@@ -16,7 +18,9 @@
     <UserButton/>
     <NavUl {activeUrl} {activeClass} {nonActiveClass}>
         <NavLi href="/">Home</NavLi>
-        <NavLi href="/add/">Add Entry</NavLi>
+        {#if token}
+            <NavLi href="/add/">Add Entry</NavLi>
+        {/if}
         <NavLi href="/searchEntries/">Search Entries</NavLi>
         <NavLi href="/aboutUs/">About us</NavLi>
     </NavUl>

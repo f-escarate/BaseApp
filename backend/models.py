@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Date, Float, Integer, String
+from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -11,6 +12,8 @@ class User(Base):
     email = Column(String, index=True)
     hashed_password = Column(String, index=True)
 
+    items = relationship("Item", back_populates="owner")
+
 class Item(Base):
     __tablename__ = "items"
 
@@ -21,3 +24,6 @@ class Item(Base):
     discreteVar = Column(Integer, primary_key=False)
     date = Column(Date, primary_key=False)
     image = Column(String, primary_key=False)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+
+    owner = relationship("User", back_populates="items")
