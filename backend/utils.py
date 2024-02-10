@@ -34,8 +34,11 @@ def read_image(id, extension):
     with open(f"{IMG_PATH}/{id}.{extension}", "rb") as file_object:
         return file_object.read()
 
-def create_item(db: Session, item: Item):
-    db_item = models.Item(**item.dict())
+def create_item(db: Session, item: Item, user_id: int):
+    """
+        Crea un item en la base de datos.
+    """
+    db_item = models.Item(**item.dict(), owner_id=user_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

@@ -32,13 +32,18 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @app.post("/post_item/")
 async def post_item(token: Annotated[str, Depends(oauth2_scheme)], item: Item = Depends(Item), db: Session = Depends(get_db)):
+    if not token:
+        return unauthorized_exception("Invalid token")
+    user = get_user_by_name(jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub"), db)
+    if user is None:
+        return {"status": "error", "msg": "problem with user authentication"}
     file_extension = img_validation(item.image)
     if file_extension is None:
         return {"status": "error", "msg": "invalid image"}
         
     image = item.image
     item.image = file_extension
-    created_item = create_item(db=db, item=item)
+    created_item = create_item(db=db, item=item, user_id=user.id)
     save_image(image, created_item.id, file_extension)
     return {"status": "success"}
 
