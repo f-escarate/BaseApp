@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
+    import { HOST } from '$lib/constants';
     export let entry_data;
-    const HOST = 'http://localhost:8000';
     let image;
 
     onMount(async () => {

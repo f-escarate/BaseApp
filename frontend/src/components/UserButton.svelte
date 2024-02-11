@@ -3,7 +3,7 @@
     import UserIcon from './icons/UserIcon.svelte';
     import Cookies from 'js-cookie';
     import { onMount } from 'svelte';
-    const HOST = 'http://localhost:8000';
+    import { HOST } from '$lib/constants';
     let data = {
         name: '',
         email: '',

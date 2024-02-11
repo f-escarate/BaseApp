@@ -1,7 +1,7 @@
 <script>
     import { FloatingLabelInput, Textarea, Range, Label, Button } from 'flowbite-svelte';
+    import { HOST } from '$lib/constants';
     export let token;
-    const HOST = 'http://localhost:8000';
     let title = '';
     let description = '';
     let continuousVar = 5.0;

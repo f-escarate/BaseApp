@@ -1,8 +1,7 @@
 <script>
     import Entry from './Entry.svelte';
     import { onMount } from 'svelte';
-
-    const HOST = 'http://localhost:8000'
+    import { HOST } from '$lib/constants';
     let entries = [];
 
     onMount(async () => {

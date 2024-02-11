@@ -1,7 +1,7 @@
 <script>
     import { Tabs, TabItem, FloatingLabelInput , Button} from 'flowbite-svelte';
     import Cookies from 'js-cookie';
-    const HOST = 'http://localhost:8000';
+    import { HOST } from '$lib/constants';
     let name = '';
     let email = '';
     let pass = '';
