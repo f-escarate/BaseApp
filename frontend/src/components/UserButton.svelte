@@ -4,13 +4,15 @@
     import Cookies from 'js-cookie';
     import { onMount } from 'svelte';
     import { HOST } from '$lib/constants';
+    export let authenticated;
+
     let data = {
         name: '',
         email: '',
         image: '',
-        authenticated: false
     };
     onMount(async () => {
+        if(Cookies.get('token') === undefined) return;
         const response = 
             await fetch(`${HOST}/me/`, {
                 method: "GET",
@@ -24,7 +26,7 @@
             data.name = json.username;
             data.email = json.email;
             data.image = '';
-            data.authenticated=true;
+            authenticated = true;
         }
     });
     const handleLogOut = () => {
@@ -35,7 +37,7 @@
 
 </script>
 
-{#if data.authenticated}
+{#if authenticated}
     <div class="flex items-center md:order-2">
         <Avatar id="avatar-menu" src={data.image} />
         <NavHamburger class1="w-full md:flex md:w-auto md:order-1" />

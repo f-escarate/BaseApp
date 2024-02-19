@@ -17,7 +17,7 @@
         });
         const json = await response.json();
         if (json.status == 'success') {
-            Cookies.set('token', json.access_token, { sameSite:'strict' });
+            Cookies.set('token', json.access_token, { sameSite:'strict', secure:true });
             alert('Successfully logged in');
             window.location.href = '/';
             return;
