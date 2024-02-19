@@ -52,6 +52,17 @@ async def get_items(db: Session = Depends(get_db)):
     items = db.query(models.Item).all()
     return items
 
+@app.get("/get_items/own/")
+async def get_my_items(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)):
+    if not token:
+        return unauthorized_exception("Invalid token")
+    user = get_user_by_name(jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub"), db)
+    if user is None:
+        return {"status": "error", "msg": "problem with user authentication"}
+    items = db.query(models.Item).filter(models.Item.owner_id == user.id).all()
+    return items
+
+
 @app.get("/get_image/{item_id}")
 async def get_image(item_id: int, db: Session = Depends(get_db)):
     item = db.query(models.Item).filter(models.Item.id == item_id).first()
