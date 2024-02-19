@@ -1,5 +1,5 @@
 <script>
-    import Entry from './Entry.svelte';
+    import Entry from '../../components/Entry.svelte';
     import { onMount } from 'svelte';
     import { HOST } from '$lib/constants';
     import Cookies from 'js-cookie';
