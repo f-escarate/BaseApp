@@ -1,34 +1,48 @@
 <script>
     import { FloatingLabelInput, Textarea, Range, Label, Button } from 'flowbite-svelte';
+    import { onMount } from 'svelte';
     import { HOST } from '$lib/constants';
+
     export let token;
-    let title = '';
-    let description = '';
-    let continuousVar = 5.0;
-    let discreteVar = 5;
-    let date = null;
-    let image = null;
+    export let http_method = 'POST';
+    export let endpoint_url = '/post_item/';
+    export let entry = {
+        title : '',
+        description : '',
+        continuousVar : 5.0,
+        discreteVar : 5,
+        date : null,
+        image : null,
+    };
+    export const previewImage = () => {
+        console.log(entry.image);
+        var preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(entry.image);
+        preview.onload = () => {
+            URL.revokeObjectURL(preview.src) // free memory
+        }
+    }
 
     const restartForm = () => {
-        title = '';
-        description = '';
-        continuousVar = 5.0;
-        discreteVar = 5;
-        date = null;
-        image = null;
+        entry.title = '';
+        entry.description = '';
+        entry.continuousVar = 5.0;
+        entry.discreteVar = 5;
+        entry.date = null;
+        entry.image = null;
         var preview = document.getElementById('preview');
         preview.src = '';
     }
 
     const validation = () => {
         let msg = '';
-        if (title == '')
+        if (entry.title == '')
             msg += 'Title cannot be empty\n';
-        if (description == '')
+        if (entry.description == '')
             msg += 'Description cannot be empty\n';
-        if (date == null)
+        if (entry.date == null)
             msg +=  'Date cannot be empty\n';
-        if (image == null)
+        if (entry.image == null)
             msg += 'Image cannot be empty\n';
         
         if (msg !== '') {
@@ -43,22 +57,17 @@
             return;
         }
 		const data = new FormData();
-        data.append('title', title);
-        data.append('description', description);
-        data.append('continuousVar', continuousVar);
-        data.append('discreteVar', discreteVar);
-        data.append('date', date);
-        data.append('image', image);
-
-        const response = await fetch(`${HOST}/post_item/`, {
-            method: "POST",
+        for ( var key in entry ) {
+            data.append(key, entry[key]);
+        }
+        const response = await fetch(`${HOST}${endpoint_url}`, {
+            method: http_method,
             headers: {
                 Authorization: `Bearer ${token}`
             },
             body: data
         });
         const json = await response.json();
-        console.log(json);
         if (json.status == 'success') {
             alert('Successfully added');
             restartForm();
@@ -66,14 +75,9 @@
             alert('Failed to add');
         }
     }
-
     const loadFile = (event) => {
-        var preview = document.getElementById('preview');
-        image = event.target.files[0];
-        preview.src = URL.createObjectURL(image);
-        preview.onload = () => {
-            URL.revokeObjectURL(preview.src) // free memory
-        }
+        entry.image = event.target.files[0];
+        previewImage();
     };
 
 </script>
@@ -81,30 +85,30 @@
     <div class='grid gap-6 items-end w-full md:grid-cols-2'>
         <div class='md:col-span-2'>
             <Label for="title" class="mb-2">Title</Label>
-            <FloatingLabelInput style="filled" name="title" id="title" type="text" label="Title" bind:value={title}/>
+            <FloatingLabelInput style="filled" name="title" id="title" type="text" label="Title" bind:value={entry.title}/>
         </div>
         <div class='md:col-span-1 h-full flex flex-col justify-between'>
             <div class="mb-4">
                 <Label for="continuous-var">Continuous variable</Label>
-                <Range id="continuous-var" name="continuous-var" min="0" max="10" step="0.001" bind:value={continuousVar}/>
-                <p class='text-xs italic'>Value: {continuousVar}</p>
+                <Range id="continuous-var" name="continuous-var" min="0" max="10" step="0.001" bind:value={entry.continuousVar}/>
+                <p class='text-xs italic'>Value: {entry.continuousVar}</p>
             </div>
 
             <div class="mb-4">
                 <Label for="discrete-var">Discrete variable</Label>
-                <Range id="discrete-var" name="discrete-var" min="0" max="10" step="1" bind:value={discreteVar}/>
-                <p class='text-xs italic'>Value: {discreteVar}</p>
+                <Range id="discrete-var" name="discrete-var" min="0" max="10" step="1" bind:value={entry.discreteVar}/>
+                <p class='text-xs italic'>Value: {entry.discreteVar}</p>
             </div>
 
             <div class="flex flex-col">
                 <Label for="date" class="mb-1">Date</Label>
-                <input type="date" id="date" name="date" class="p-2" bind:value={date}>
+                <input type="date" id="date" name="date" class="p-2" bind:value={entry.date}>
             </div>
         </div>
 
         <div class="h-full">
             <Label for="description" class="mb-2">Description</Label>
-            <Textarea class="h-full" id="description" placeholder="Enter description" rows="5" name="description" bind:value={description}/>
+            <Textarea class="h-full" id="description" placeholder="Enter description" rows="5" name="description" bind:value={entry.description}/>
         </div>
 
         <div class="my-2 flex-row align-center">

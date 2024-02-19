@@ -62,6 +62,37 @@ async def get_my_items(token: Annotated[str, Depends(oauth2_scheme)], db: Sessio
     items = db.query(models.Item).filter(models.Item.owner_id == user.id).all()
     return items
 
+@app.get("/get_item/{item_id}/")
+async def get_item(item_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.Item).filter(models.Item.id == item_id).first()
+    return item
+
+@app.patch("/update_item/{item_id}/")
+async def update_item(token: Annotated[str, Depends(oauth2_scheme)], item_id: int, item: Item = Depends(Item), db: Session = Depends(get_db)):
+    if not token:
+        return unauthorized_exception("Invalid token")
+    user = get_user_by_name(jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub"), db)
+    if user is None:
+        return {"status": "error", "msg": "problem with user authentication"}
+    db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
+    if db_item is None:
+        return {"status": "error", "msg": "item does not exist"}
+    if db_item.owner_id != user.id:
+        return {"status": "error", "msg": "you are not the owner of this item"}
+    file_extension = img_validation(item.image)
+    if file_extension is None:
+        return {"status": "error", "msg": "invalid image"}
+    image = item.image
+    item.image = file_extension
+    db_item.title = item.title
+    db_item.description = item.description
+    db_item.continuousVar = item.continuousVar
+    db_item.discreteVar = item.discreteVar
+    db_item.date = item.date
+    db_item.image = file_extension
+    db.commit()
+    save_image(image, item_id, file_extension)
+    return {"status": "success"}
 
 @app.get("/get_image/{item_id}")
 async def get_image(item_id: int, db: Session = Depends(get_db)):
