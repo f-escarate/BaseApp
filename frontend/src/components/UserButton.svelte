@@ -27,6 +27,9 @@
             data.email = json.email;
             data.image = '';
             authenticated = true;
+        } else {
+            authenticated = false;
+            Cookies.remove('token');
         }
     });
     const handleLogOut = () => {
