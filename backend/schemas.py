@@ -23,9 +23,11 @@ class UserRegister(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-class TokenData(BaseModel):
-    username: str
+    
+@form_body
+class ChangePassword(BaseModel):
+    old_pass: str
+    new_pass: str
 
 
 # ================ Item schemas ================ #

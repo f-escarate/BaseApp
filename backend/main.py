@@ -8,8 +8,8 @@ from fastapi.staticfiles import StaticFiles
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 
-from schemas import Item, UserRegister
-from authentication import authenticate_user, create_access_token, get_password_hash, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, get_user_by_name, unauthorized_exception
+from schemas import ChangePassword, Item, UserRegister
+from authentication import authenticate_user, create_access_token, get_password_hash, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, get_user_by_name, unauthorized_exception, verify_password
 from utils import save_image, create_item, read_image, img_validation
 from database import get_db, Base, engine
 import models
@@ -149,5 +149,18 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
         "access_token": access_token,
         "token_type": "bearer"
     }
+
+@app.patch("/change_password/")
+async def change_password(token: Annotated[str, Depends(oauth2_scheme)], change: ChangePassword = Depends(ChangePassword), db: Session = Depends(get_db)):
+    if not token:
+        return unauthorized_exception("Invalid token")
+    user = get_user_by_name(jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub"), db)
+    if user is None:
+        return {"status": "error", "msg": "Problem with user authentication"}
+    if not verify_password(change.old_pass, user.hashed_password):
+        return {"status": "error", "msg": "Incorrect old password"}
+    user.hashed_password = get_password_hash(change.new_pass)
+    db.commit()
+    return {"status": "success"}
 
 app.mount("/", StaticFiles(directory="static",html = True), name="static")

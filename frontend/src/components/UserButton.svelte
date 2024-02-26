@@ -51,7 +51,7 @@
             <span class="block truncate text-sm font-medium">{data.email}</span>
         </DropdownHeader>
         <DropdownItem href='/myEntries/'>My Entries</DropdownItem>
-        <DropdownItem>Account Settings</DropdownItem>
+        <DropdownItem href='/account/'>Account Settings</DropdownItem>
         <DropdownDivider />
         <DropdownItem on:click={handleLogOut}>Log out</DropdownItem>
     </Dropdown>
