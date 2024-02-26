@@ -14,8 +14,6 @@
 </script>
 
 {#if token}
-    <div class='mx-auto w-[75%] my-5 h-full p-4 space-y-4'>
-        <h1 class='text-4xl font-bold'>Add Entry</h1>
-        <Form token={token}/>
-    </div>
+    <h1 class='text-4xl font-bold'>Add Entry</h1>
+    <Form token={token}/>
 {/if}
